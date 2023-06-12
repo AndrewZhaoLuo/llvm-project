@@ -18,7 +18,7 @@ set(LLVM_TARGET_DEFINITIONS mlir/ToyCombine.td)
 mlir_tablegen(ToyCombine.inc -gen-rewriters)
 add_public_tablegen_target(ToyCh8CombineIncGen)
 
-add_toy_chapter(toyc-ch7
+add_toy_chapter(toyc-ch8
   toyc.cpp
   parser/AST.cpp
   mlir/MLIRGen.cpp
@@ -38,7 +38,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include/)
 get_property(dialect_libs GLOBAL PROPERTY MLIR_DIALECT_LIBS)
 get_property(conversion_libs GLOBAL PROPERTY MLIR_CONVERSION_LIBS)
-target_link_libraries(toyc-ch7
+target_link_libraries(toyc-ch8
   PRIVATE
     ${dialect_libs}
     ${conversion_libs}
