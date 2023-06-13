@@ -53,6 +53,7 @@ def Toy_StructType :
 
 // Provide a definition of the types that are used within the Toy dialect.
 def Toy_Tensor_Type : AnyTypeOf<[F64Tensor, F32Tensor, F16Tensor]>;
+def Toy_Memref_Type : AnyTypeOf<[F64MemRef, F32MemRef, F16MemRef]>;
 def Toy_Type : AnyTypeOf<[Toy_Tensor_Type, Toy_StructType]>;
 
 //===----------------------------------------------------------------------===//
@@ -181,7 +182,7 @@ class CastDtypeOp<string mnemonic> :
 
   let arguments = (ins Toy_Tensor_Type:$input);
   let results = (outs Toy_Tensor_Type:$output);
-  
+
   // Allow building a TransposeOp with from the input operand.
   let builders = [
     OpBuilder<(ins "Value":$input)>
@@ -348,7 +349,7 @@ def PrintOp : Toy_Op<"print"> {
 
   // The print operation takes an input tensor to print.
   // We also allow a F64MemRef to enable interop during partial lowering.
-  let arguments = (ins AnyTypeOf<[F64Tensor, F64MemRef]>:$input);
+  let arguments = (ins AnyTypeOf<[Toy_Memref_Type, Toy_Tensor_Type]>:$input);
 
   let assemblyFormat = "$input attr-dict `:` type($input)";
 }

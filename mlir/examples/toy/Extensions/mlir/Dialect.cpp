@@ -296,6 +296,21 @@ bool CastOp::areCastCompatible(TypeRange inputs, TypeRange outputs) {
 // DtypeCastOp
 //===----------------------------------------------------------------------===//
 
+template <typename T>
+void dtype_shape_inference_func(T* cast_dtype_op) {
+  TensorType curType = cast<TensorType>(cast_dtype_op -> getResult().getType());
+  TensorType otherType = cast<TensorType>(cast_dtype_op -> getInput().getType());
+  if (!curType) {
+    cast_dtype_op -> emitOpError() << "Initialized type is not a tensor type?";
+    return;
+  }
+  if (!otherType) {
+    cast_dtype_op -> emitOpError() << "Input type is not a tensor type?";
+    return;
+  }
+  cast_dtype_op -> getResult().setType(curType.clone(otherType.getShape()));
+}
+
 /// Infer the output shape of the CastOp, this is required by the shape
 /// inference interface.
 void CastDtypeToDoubleOp::build(mlir::OpBuilder &builder, mlir::OperationState &state,
@@ -303,21 +318,21 @@ void CastDtypeToDoubleOp::build(mlir::OpBuilder &builder, mlir::OperationState &
   state.addTypes(UnrankedTensorType::get(builder.getF64Type()));
   state.addOperands(value);
 }
-void CastDtypeToDoubleOp::inferShapes() { getResult().setType(getInput().getType()); }
+void CastDtypeToDoubleOp::inferShapes() { dtype_shape_inference_func(this);}
 
 void CastDtypeToFloatOp::build(mlir::OpBuilder &builder, mlir::OperationState &state,
                         mlir::Value value) {
   state.addTypes(UnrankedTensorType::get(builder.getF32Type()));
   state.addOperands(value);
 }
-void CastDtypeToFloatOp::inferShapes() { getResult().setType(getInput().getType()); }
+void CastDtypeToFloatOp::inferShapes() { dtype_shape_inference_func(this);}
 
 void CastDtypeToHalfOp::build(mlir::OpBuilder &builder, mlir::OperationState &state,
                         mlir::Value value) {
   state.addTypes(UnrankedTensorType::get(builder.getF16Type()));
   state.addOperands(value);
 }
-void CastDtypeToHalfOp::inferShapes() { getResult().setType(getInput().getType()); }
+void CastDtypeToHalfOp::inferShapes() { dtype_shape_inference_func(this);}
 
 
 //===----------------------------------------------------------------------===//

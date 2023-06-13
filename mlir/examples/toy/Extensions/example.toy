@@ -31,7 +31,13 @@ def main() {
   print([[0]]);
 
   ## handle casts 
+  # These should be handled by all but the half
+  var cast_test = [3000000000, 400000, 300000];
   var cast1 = cast_to_double(c);
   var cast2 = cast_to_float(c);
   var cast3 = cast_to_half(c);
+
+  print(cast1);
+  print(cast2);
+  print(cast3);
 }
