@@ -31,7 +31,7 @@ def main() {
   print([[0]]);
 
   ## handle casts 
-  var cast1 = cast_double(c);
-  var cast2 = cast_float(c);
-  var cast3 = cast_half(c);
+  var cast1 = cast_to_double(c);
+  var cast2 = cast_to_float(c);
+  var cast3 = cast_to_half(c);
 }

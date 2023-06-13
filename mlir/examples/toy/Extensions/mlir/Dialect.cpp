@@ -291,6 +291,35 @@ bool CastOp::areCastCompatible(TypeRange inputs, TypeRange outputs) {
   return !input.hasRank() || !output.hasRank() || input == output;
 }
 
+
+//===----------------------------------------------------------------------===//
+// DtypeCastOp
+//===----------------------------------------------------------------------===//
+
+/// Infer the output shape of the CastOp, this is required by the shape
+/// inference interface.
+void CastDtypeToDoubleOp::build(mlir::OpBuilder &builder, mlir::OperationState &state,
+                        mlir::Value value) {
+  state.addTypes(UnrankedTensorType::get(builder.getF64Type()));
+  state.addOperands(value);
+}
+void CastDtypeToDoubleOp::inferShapes() { getResult().setType(getInput().getType()); }
+
+void CastDtypeToFloatOp::build(mlir::OpBuilder &builder, mlir::OperationState &state,
+                        mlir::Value value) {
+  state.addTypes(UnrankedTensorType::get(builder.getF32Type()));
+  state.addOperands(value);
+}
+void CastDtypeToFloatOp::inferShapes() { getResult().setType(getInput().getType()); }
+
+void CastDtypeToHalfOp::build(mlir::OpBuilder &builder, mlir::OperationState &state,
+                        mlir::Value value) {
+  state.addTypes(UnrankedTensorType::get(builder.getF16Type()));
+  state.addOperands(value);
+}
+void CastDtypeToHalfOp::inferShapes() { getResult().setType(getInput().getType()); }
+
+
 //===----------------------------------------------------------------------===//
 // FuncOp
 //===----------------------------------------------------------------------===//

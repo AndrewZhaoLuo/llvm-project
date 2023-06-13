@@ -52,7 +52,8 @@ def Toy_StructType :
                 "Toy struct type">;
 
 // Provide a definition of the types that are used within the Toy dialect.
-def Toy_Type : AnyTypeOf<[F64Tensor, Toy_StructType]>;
+def Toy_Tensor_Type : AnyTypeOf<[F64Tensor, F32Tensor, F16Tensor]>;
+def Toy_Type : AnyTypeOf<[Toy_Tensor_Type, Toy_StructType]>;
 
 //===----------------------------------------------------------------------===//
 // Toy Operations
@@ -159,6 +160,39 @@ def CastOp : Toy_Op<"cast", [
 
   let assemblyFormat = "$input attr-dict `:` type($input) `to` type($output)";
 }
+
+//===----------------------------------------------------------------------===//
+// CastDtypeOp
+//===----------------------------------------------------------------------===//
+
+class CastDtypeOp<string mnemonic> :
+    Toy_Op<
+      mnemonic, 
+      [
+        DeclareOpInterfaceMethods<ShapeInferenceOpInterface>,
+        Pure, 
+        SameOperandsAndResultShape,
+      ]
+    > {
+  let summary = "dtype cast operation";
+  let description = [{
+    Cast tensor to the indicated dtype.
+  }];
+
+  let arguments = (ins Toy_Tensor_Type:$input);
+  let results = (outs Toy_Tensor_Type:$output);
+  
+  // Allow building a TransposeOp with from the input operand.
+  let builders = [
+    OpBuilder<(ins "Value":$input)>
+  ];
+
+  let assemblyFormat = "$input attr-dict `:` type($input) `to` type($output)";
+}
+
+def CastDtypeToDoubleOp: CastDtypeOp<"cast_to_double">;
+def CastDtypeToFloatOp: CastDtypeOp<"cast_to_float">;
+def CastDtypeToHalfOp: CastDtypeOp<"cast_to_half">;
 
 //===----------------------------------------------------------------------===//
 // FuncOp
@@ -300,7 +334,6 @@ def DivOp : Toy_Op<"div",
     OpBuilder<(ins "Value":$lhs, "Value":$rhs)>
   ];
 }
-
 
 //===----------------------------------------------------------------------===//
 // PrintOp

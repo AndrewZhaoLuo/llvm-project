@@ -512,29 +512,29 @@ private:
       return builder.create<TransposeOp>(location, operands[0]);
     }
 
-    if (callee == "cast_double") {
+    if (callee == "cast_to_double") {
       if (call.getArgs().size() != 1) {
         emitError(location, "MLIR codegen encountered an error: toy.cast_double "
                             "does not accept multiple arguments");
         return nullptr;
       }
-      emitError(location, "Need to implement toy.cast_double ");
+      return builder.create<CastDtypeToDoubleOp>(location, operands[0]);
     }
-    if (callee == "cast_float") {
+    if (callee == "cast_to_float") {
       if (call.getArgs().size() != 1) {
         emitError(location, "MLIR codegen encountered an error: toy.cast_float "
                             "does not accept multiple arguments");
         return nullptr;
       }
-      emitError(location, "Need to implement toy.cast_float");
+      return builder.create<CastDtypeToFloatOp>(location, operands[0]);
     }
-    if (callee == "cast_half") {
+    if (callee == "cast_to_half") {
       if (call.getArgs().size() != 1) {
         emitError(location, "MLIR codegen encountered an error: toy.cast_half "
                             "does not accept multiple arguments");
         return nullptr;
       }
-      emitError(location, "Need to implement toy.cast_half ");
+      return builder.create<CastDtypeToHalfOp>(location, operands[0]);
     }
 
     // Otherwise this is a call to a user-defined function. Calls to
