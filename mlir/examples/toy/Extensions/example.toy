@@ -32,12 +32,17 @@ def main() {
 
   ## handle casts 
   # These should be handled by all but the half
-  var cast_test = [3000000000, 400000, 300000];
-  var cast1 = cast_to_double(c);
-  var cast2 = cast_to_float(c);
-  var cast3 = cast_to_half(c);
+  var cast_test = [[1, 2, 3]];
+  print(cast_test);
+  print([[0]]);
 
-  print(cast1);
+  # var cast1 = cast_to_double(cast_test);
+  var cast2 = cast_to_float(cast_test);
+  var cast3 = cast_to_half(cast_test);
+
+  # print(cast1);
+  # print([[0]]);
   print(cast2);
-  print(cast3);
+  print([[0]]);
+  # print(cast3);
 }
