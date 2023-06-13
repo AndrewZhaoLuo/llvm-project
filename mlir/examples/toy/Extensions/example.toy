@@ -18,13 +18,20 @@ def main() {
   print(c);
   print([[0]]);
 
-  var d = c / c;
+  ## Handle division
+  var div1 = c / c;
 
-  print(d);
+  print(div1);
   print([[0]]);
 
   # See what happens when we divide
-  var e = transpose([[1, 2, 3], [4, 5, 0]]);
-  print(e);
+  var div2 = transpose([[1, 2, 3], [4, 5, 0]]);
+  var div3 = c / div2;
+  print(div3);
   print([[0]]);
+
+  ## handle casts 
+  var cast1 = cast_double(c);
+  var cast2 = cast_float(c);
+  var cast3 = cast_half(c);
 }

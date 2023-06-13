@@ -46,7 +46,7 @@ enum Token : int {
   tok_struct = -5,
 
   // primary
-  tok_identifier = -6,
+  tok_identifier = -6, 
   tok_number = -7,
 };
 
