@@ -1165,6 +1165,9 @@ private:
   /// the upper limit.
   std::optional<int64_t> elementsAttrElementLimit;
 
+  /// Elide large dense resource blobs if size in bytes is too large.
+  std::optional<int64_t> denseResourcesSizeLimit;
+
   /// Print debug information.
   bool printDebugInfoFlag : 1;
   bool printDebugInfoPrettyFormFlag : 1;

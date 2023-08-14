@@ -135,10 +135,16 @@ struct AsmPrinterOptions {
           "Print DenseElementsAttrs with a hex string that have "
           "more elements than the given upper limit (use -1 to disable)")};
 
+  llvm::cl::opt<unsigned> elideDenseResourcesIfLarger{
+      "mlir-elide-denseresources-if-larger",
+      llvm::cl::desc("Elide DenseResources with \"...\" that have "
+                     "a size in bytes greater than the given upper limit")};
+
   llvm::cl::opt<unsigned> elideElementsAttrIfLarger{
       "mlir-elide-elementsattrs-if-larger",
       llvm::cl::desc("Elide ElementsAttrs with \"...\" that have "
                      "more elements than the given upper limit")};
+
 
   llvm::cl::opt<bool> printDebugInfoOpt{
       "mlir-print-debuginfo", llvm::cl::init(false),
@@ -189,6 +195,8 @@ OpPrintingFlags::OpPrintingFlags()
   // Initialize based upon command line options, if they are available.
   if (!clOptions.isConstructed())
     return;
+  if (clOptions->elideDenseResourcesIfLarger.getNumOccurrences())
+    denseResourcesSizeLimit = clOptions->elideDenseResourcesIfLarger;
   if (clOptions->elideElementsAttrIfLarger.getNumOccurrences())
     elementsAttrElementLimit = clOptions->elideElementsAttrIfLarger;
   printDebugInfoFlag = clOptions->printDebugInfoOpt;
